@@ -13080,320 +13080,117 @@ div#notebook {
     <div class="container" id="notebook-container">
 
 <div class="cell border-box-sizing code_cell rendered celltag_hide-input">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># sys, file and nav packages:</span>
-<span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">dt</span>
-<span class="kn">import</span> <span class="nn">json</span>
-
-<span class="c1"># math packages:</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
-<span class="kn">from</span> <span class="nn">statsmodels.distributions.empirical_distribution</span> <span class="kn">import</span> <span class="n">ECDF</span>
-
-<span class="c1"># charting:</span>
-<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">matplotlib.dates</span> <span class="k">as</span> <span class="nn">mdates</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">ticker</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">colors</span>
-<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <span class="n">LinearSegmentedColormap</span>
-<span class="kn">from</span> <span class="nn">matplotlib.gridspec</span> <span class="kn">import</span> <span class="n">GridSpec</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-
-<span class="kn">import</span> <span class="nn">base64</span><span class="o">,</span> <span class="nn">io</span><span class="o">,</span> <span class="nn">IPython</span>
-<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span> <span class="k">as</span> <span class="n">PILImage</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Markdown</span> <span class="k">as</span> <span class="n">md</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">display</span><span class="p">,</span> <span class="n">Math</span><span class="p">,</span> <span class="n">Latex</span>
-
-
-<span class="c1"># set some parameters:</span>
-<span class="n">today</span> <span class="o">=</span> <span class="n">dt</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">start_date</span> <span class="o">=</span> <span class="s1">&#39;2020-03-01&#39;</span>
-<span class="n">end_date</span> <span class="o">=</span><span class="s1">&#39;2021-05-31&#39;</span>
-
-<span class="n">a_fail_rate</span> <span class="o">=</span> <span class="mi">100</span>
-
-<span class="n">unit_label</span> <span class="o">=</span> <span class="s1">&#39;p/100m&#39;</span>
-<span class="n">reporting_unit</span> <span class="o">=</span> <span class="mi">100</span>
-
-<span class="c1"># name of the output folder:</span>
-<span class="n">name_of_project</span> <span class="o">=</span> <span class="s1">&#39;dist_map&#39;</span>
-
-<span class="n">a_color</span> <span class="o">=</span> <span class="s1">&#39;dodgerblue&#39;</span>
-
-<span class="c1"># colors for gradients</span>
-<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;beige&#39;</span><span class="p">,</span> <span class="s1">&#39;navajowhite&#39;</span><span class="p">,</span> <span class="s1">&#39;sandybrown&#39;</span><span class="p">,</span> <span class="s1">&#39;salmon&#39;</span><span class="p">,</span> <span class="s1">&#39;sienna&#39;</span><span class="p">]</span>
-<span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]</span>
-<span class="n">cmap2</span> <span class="o">=</span> <span class="n">LinearSegmentedColormap</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="s2">&quot;mycmap&quot;</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">nodes</span><span class="p">,</span> <span class="n">colors</span><span class="p">)))</span>
-
-<span class="n">bassin_pallette</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;rhone&#39;</span><span class="p">:</span><span class="s1">&#39;dimgray&#39;</span><span class="p">,</span> <span class="s1">&#39;aare&#39;</span><span class="p">:</span><span class="s1">&#39;salmon&#39;</span><span class="p">,</span> <span class="s1">&#39;linth&#39;</span><span class="p">:</span><span class="s1">&#39;tan&#39;</span><span class="p">,</span> <span class="s1">&#39;ticino&#39;</span><span class="p">:</span><span class="s1">&#39;steelblue&#39;</span><span class="p">,</span> <span class="s1">&#39;reuss&#39;</span><span class="p">:</span><span class="s1">&#39;purple&#39;</span><span class="p">}</span>
-
-<span class="c1"># define the feature level and components</span>
-<span class="n">this_level</span> <span class="o">=</span> <span class="s1">&#39;river_bassin&#39;</span>
-<span class="n">comps</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;linth&#39;</span><span class="p">,</span> <span class="s1">&#39;rhone&#39;</span><span class="p">,</span> <span class="s1">&#39;aare&#39;</span><span class="p">,</span> <span class="s1">&#39;ticino&#39;</span><span class="p">]</span>
-<span class="n">comp_labels</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;linth&quot;</span><span class="p">:</span><span class="s2">&quot;Linth/Limmat&quot;</span><span class="p">,</span> <span class="s2">&quot;rhone&quot;</span><span class="p">:</span><span class="s2">&quot;Rhône&quot;</span><span class="p">,</span> <span class="s1">&#39;aare&#39;</span><span class="p">:</span><span class="s2">&quot;Aare&quot;</span><span class="p">,</span> <span class="s2">&quot;ticino&quot;</span><span class="p">:</span><span class="s2">&quot;Ticino/Cerisio&quot;</span><span class="p">,</span> <span class="s2">&quot;reuss&quot;</span><span class="p">:</span><span class="s2">&quot;Reuss&quot;</span><span class="p">}</span>
-<span class="n">comp_palette</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Linth/Limmat&quot;</span><span class="p">:</span><span class="s2">&quot;dimgray&quot;</span><span class="p">,</span> <span class="s2">&quot;Rhône&quot;</span><span class="p">:</span><span class="s2">&quot;tan&quot;</span><span class="p">,</span> <span class="s2">&quot;Aare&quot;</span><span class="p">:</span><span class="s2">&quot;salmon&quot;</span><span class="p">,</span> <span class="s2">&quot;Ticino/Cerisio&quot;</span><span class="p">:</span><span class="s2">&quot;steelblue&quot;</span><span class="p">,</span> <span class="s2">&quot;Reuss&quot;</span><span class="p">:</span><span class="s2">&quot;purple&quot;</span><span class="p">}</span>
-
-<span class="c1"># explanatory variables:</span>
-<span class="n">luse_exp</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;% to buildings&#39;</span><span class="p">,</span> <span class="s1">&#39;% to recreation&#39;</span><span class="p">,</span> <span class="s1">&#39;% to agg&#39;</span><span class="p">,</span> <span class="s1">&#39;% to woods&#39;</span><span class="p">,</span> <span class="s1">&#39;streets km&#39;</span><span class="p">,</span> <span class="s1">&#39;intersects&#39;</span><span class="p">]</span>
-
-<span class="c1"># columns needed</span>
-<span class="n">use_these_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;loc_date&#39;</span> <span class="p">,</span>
-                  <span class="s1">&#39;% to buildings&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;% to trans&#39;</span><span class="p">,</span> 
-                  <span class="s1">&#39;% to recreation&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;% to agg&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;% to woods&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;population&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;river_bassin&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;water_name_slug&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;streets km&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;intersects&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;length&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;groupname&#39;</span><span class="p">,</span>
-                  <span class="s1">&#39;code&#39;</span>
-                 <span class="p">]</span>
-
-<span class="c1"># these are default</span>
-<span class="n">top_name</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;All survey areas&quot;</span><span class="p">]</span>
-
-<span class="c1"># get your data:</span>
-<span class="n">df</span><span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;checked_sdata_eos_2020_21.csv&#39;</span><span class="p">)</span>
-
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;river_basins.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">:</span>
-    <span class="n">river_bassins</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">infile</span><span class="p">)</span>
-
-<span class="n">dfBeaches</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;beaches_with_land_use_rates.csv&quot;</span><span class="p">)</span>
-<span class="n">dfCodes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;codes_with_group_names_2015.csv&quot;</span><span class="p">)</span>
-<span class="n">dfDims</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;corrected_dims.csv&quot;</span><span class="p">)</span>
-
-<span class="c1"># set the index of the beach data to location slug</span>
-<span class="n">dfBeaches</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;slug&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="n">city_map</span> <span class="o">=</span> <span class="n">dfBeaches</span><span class="p">[</span><span class="s1">&#39;city&#39;</span><span class="p">]</span>
-
-<span class="c1"># map locations to feature names</span>
-<span class="n">location_wname_key</span> <span class="o">=</span> <span class="n">dfBeaches</span><span class="o">.</span><span class="n">water_name_slug</span>
-
-<span class="c1"># map water_name_slug to water_name</span>
-<span class="n">wname_wname</span> <span class="o">=</span> <span class="n">dfBeaches</span><span class="p">[[</span><span class="s1">&#39;water_name_slug&#39;</span><span class="p">,</span><span class="s1">&#39;water_name&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
-<span class="n">wname_wname</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;water_name_slug&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        
-<span class="n">dfCodes</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;code&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="c1"># these descriptions need to be shortened for display</span>
-<span class="k">def</span> <span class="nf">shorten_the_value</span><span class="p">(</span><span class="n">an_array</span><span class="p">,</span> <span class="n">a_df</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Change the value in a data frame column with an array of three values.</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">    an_array: array: the index, column and the new value</span>
-<span class="sd">    a_df: dataframe: the dataframe to change:</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">    The changed dataframe</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">a_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">an_array</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">an_array</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">an_array</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">a_df</span>
-
-<span class="n">dfCodes</span> <span class="o">=</span> <span class="n">shorten_the_value</span><span class="p">([</span><span class="s2">&quot;G74&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;Insulation: includes spray foams&quot;</span><span class="p">],</span> <span class="n">dfCodes</span><span class="p">)</span>
-<span class="n">dfCodes</span> <span class="o">=</span> <span class="n">shorten_the_value</span><span class="p">([</span><span class="s2">&quot;G940&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;Foamed EVA for crafts and sports&quot;</span><span class="p">],</span> <span class="n">dfCodes</span><span class="p">)</span>
-<span class="n">dfCodes</span> <span class="o">=</span> <span class="n">shorten_the_value</span><span class="p">([</span><span class="s2">&quot;G96&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;Sanitary-pads/tampons, applicators&quot;</span><span class="p">],</span> <span class="n">dfCodes</span><span class="p">)</span>
-<span class="n">dfCodes</span> <span class="o">=</span> <span class="n">shorten_the_value</span><span class="p">([</span><span class="s2">&quot;G178&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;Metal bottle caps and lids&quot;</span><span class="p">],</span> <span class="n">dfCodes</span><span class="p">)</span>
-<span class="n">dfCodes</span> <span class="o">=</span> <span class="n">shorten_the_value</span><span class="p">([</span><span class="s2">&quot;G82&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;Expanded foams 2.5cm - 50cm&quot;</span><span class="p">],</span> <span class="n">dfCodes</span><span class="p">)</span>
-<span class="n">dfCodes</span> <span class="o">=</span> <span class="n">shorten_the_value</span><span class="p">([</span><span class="s2">&quot;G81&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;Expanded foams .5cm - 2.5cm&quot;</span><span class="p">],</span> <span class="n">dfCodes</span><span class="p">)</span>
-<span class="n">dfCodes</span> <span class="o">=</span> <span class="n">shorten_the_value</span><span class="p">([</span><span class="s2">&quot;G117&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;Expanded foams &lt; 5mm&quot;</span><span class="p">],</span> <span class="n">dfCodes</span><span class="p">)</span>
-<span class="n">dfCodes</span> <span class="o">=</span> <span class="n">shorten_the_value</span><span class="p">([</span><span class="s2">&quot;G75&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;Plastic/foamed polystyrene 0 - 2.5cm&quot;</span><span class="p">],</span> <span class="n">dfCodes</span><span class="p">)</span>
-<span class="n">dfCodes</span> <span class="o">=</span> <span class="n">shorten_the_value</span><span class="p">([</span><span class="s2">&quot;G76&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;Plastic/foamed polystyrene 2.5cm - 50cm&quot;</span><span class="p">],</span> <span class="n">dfCodes</span><span class="p">)</span>
-<span class="n">dfCodes</span> <span class="o">=</span> <span class="n">shorten_the_value</span><span class="p">([</span><span class="s2">&quot;G24&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;Plastic lid rings&quot;</span><span class="p">],</span> <span class="n">dfCodes</span><span class="p">)</span>
-<span class="n">dfCodes</span> <span class="o">=</span> <span class="n">shorten_the_value</span><span class="p">([</span><span class="s2">&quot;G33&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;Lids for togo drinks plastic&quot;</span><span class="p">],</span> <span class="n">dfCodes</span><span class="p">)</span>
-<span class="n">dfCodes</span> <span class="o">=</span> <span class="n">shorten_the_value</span><span class="p">([</span><span class="s2">&quot;G3&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;Plastic bags, carier bags&quot;</span><span class="p">],</span> <span class="n">dfCodes</span><span class="p">)</span>
-<span class="n">dfCodes</span> <span class="o">=</span> <span class="n">shorten_the_value</span><span class="p">([</span><span class="s2">&quot;G204&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;Bricks, pipes not plastic&quot;</span><span class="p">],</span> <span class="n">dfCodes</span><span class="p">)</span>
-
-<span class="c1"># make a map to the code descriptions</span>
-<span class="n">code_description_map</span> <span class="o">=</span> <span class="n">dfCodes</span><span class="o">.</span><span class="n">description</span>
-
-<span class="c1"># make a map to the code descriptions</span>
-<span class="n">code_material_map</span> <span class="o">=</span> <span class="n">dfCodes</span><span class="o">.</span><span class="n">material</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># this is the data before the expanded fragmented plastics and foams are aggregated to Gfrags and Gfoams</span>
-
-
-<span class="c1"># this is the aggregated survey data that is being used</span>
-<span class="n">temporal</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">date</span> <span class="o">&gt;=</span> <span class="n">start_date</span><span class="p">)</span><span class="o">&amp;</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">date</span> <span class="o">&lt;=</span> <span class="n">end_date</span><span class="p">)</span>
-<span class="n">fd</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">fd</span><span class="p">[</span><span class="s1">&#39;loc_dates&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">fd</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">fd</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">values</span><span class="p">))</span>
-<span class="n">fd</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">fd</span><span class="o">.</span><span class="n">date</span><span class="p">)</span>
-
-
-<span class="n">dfb</span> <span class="o">=</span> <span class="n">dfBeaches</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">fd</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">unique</span><span class="p">()]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
-<span class="n">lu_2000</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;luse_2000.csv&#39;</span><span class="p">)</span>
-<span class="n">lu_2000</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;location&#39;</span><span class="p">:</span><span class="s1">&#39;slug&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># the landuse descriptors are integers, key them to a readable descriptor</span>
-<span class="c1"># no27 is the results of intersecting buffer to Land use</span>
 
-<span class="n">no27_keys</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="mi">1</span><span class="p">:</span><span class="s2">&quot;industrial&quot;</span><span class="p">,</span>
-    <span class="mi">2</span><span class="p">:</span><span class="s2">&quot;residential&quot;</span><span class="p">,</span>
-    <span class="mi">3</span><span class="p">:</span><span class="s2">&quot;government&quot;</span><span class="p">,</span>
-    <span class="mi">4</span><span class="p">:</span><span class="s2">&quot;agg_buildings&quot;</span><span class="p">,</span>
-    <span class="mi">5</span><span class="p">:</span><span class="s2">&quot;unk_building&quot;</span><span class="p">,</span>
-    <span class="mi">6</span><span class="p">:</span><span class="s2">&quot;roads&quot;</span><span class="p">,</span>
-    <span class="mi">7</span><span class="p">:</span><span class="s2">&quot;railways&quot;</span><span class="p">,</span>
-    <span class="mi">8</span><span class="p">:</span><span class="s2">&quot;airports&quot;</span><span class="p">,</span>
-    <span class="mi">9</span><span class="p">:</span><span class="s2">&quot;special&quot;</span><span class="p">,</span>
-    <span class="mi">10</span><span class="p">:</span><span class="s2">&quot;recreational&quot;</span><span class="p">,</span>
-    <span class="mi">11</span><span class="p">:</span><span class="s2">&quot;orchards&quot;</span><span class="p">,</span>
-    <span class="mi">12</span><span class="p">:</span><span class="s2">&quot;vineyards&quot;</span><span class="p">,</span>
-    <span class="mi">13</span><span class="p">:</span><span class="s2">&quot;horticulture&quot;</span><span class="p">,</span>
-    <span class="mi">14</span><span class="p">:</span><span class="s2">&quot;arable&quot;</span><span class="p">,</span>
-    <span class="mi">15</span><span class="p">:</span><span class="s2">&quot;meadows&quot;</span><span class="p">,</span>
-    <span class="mi">16</span><span class="p">:</span><span class="s2">&quot;farmpastures&quot;</span><span class="p">,</span>
-    <span class="mi">17</span><span class="p">:</span><span class="s2">&quot;alpinemeadows&quot;</span><span class="p">,</span>
-    <span class="mi">18</span><span class="p">:</span><span class="s2">&quot;aplinepasteurs&quot;</span><span class="p">,</span>
-    <span class="mi">19</span><span class="p">:</span><span class="s2">&quot;closed_forest&quot;</span><span class="p">,</span>
-    <span class="mi">20</span><span class="p">:</span><span class="s2">&quot;open_forest&quot;</span><span class="p">,</span>
-    <span class="mi">21</span><span class="p">:</span><span class="s2">&quot;brush_forest&quot;</span><span class="p">,</span>
-    <span class="mi">22</span><span class="p">:</span><span class="s2">&quot;woods&quot;</span><span class="p">,</span>
-    <span class="mi">23</span><span class="p">:</span><span class="s2">&quot;lakes&quot;</span><span class="p">,</span>
-    <span class="mi">24</span><span class="p">:</span><span class="s2">&quot;rivers&quot;</span><span class="p">,</span>
-    <span class="mi">25</span><span class="p">:</span><span class="s2">&quot;unproductive&quot;</span><span class="p">,</span>
-    <span class="mi">26</span><span class="p">:</span><span class="s2">&quot;bareland&quot;</span><span class="p">,</span>
-    <span class="mi">27</span><span class="p">:</span><span class="s2">&quot;glaciers&quot;</span>
-<span class="p">}</span>
+<div class="output_wrapper">
+<div class="output">
 
-<span class="c1"># group the land use into functional groups</span>
-<span class="n">no27_groups</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;buildings&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">9</span><span class="p">],</span>
-               <span class="s1">&#39;trans&#39;</span><span class="p">:[</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">],</span>
-               <span class="s1">&#39;recreation&#39;</span><span class="p">:[</span><span class="mi">10</span><span class="p">],</span>
-               <span class="s1">&#39;agg&#39;</span><span class="p">:[</span><span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">18</span><span class="p">],</span>
-               <span class="s1">&#39;woods&#39;</span><span class="p">:[</span><span class="mi">17</span><span class="p">,</span><span class="mi">19</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">21</span><span class="p">,</span><span class="mi">22</span><span class="p">],</span>
-               <span class="s1">&#39;water&#39;</span><span class="p">:[</span><span class="mi">23</span><span class="p">,</span><span class="mi">24</span><span class="p">],</span>
-               <span class="s1">&#39;unproductive&#39;</span><span class="p">:[</span><span class="mi">25</span><span class="p">,</span><span class="mi">26</span><span class="p">,</span><span class="mi">27</span><span class="p">]</span>
-              <span class="p">}</span>
-
-<span class="c1"># make column names based on the key values:</span>
-<span class="n">no27_part</span> <span class="o">=</span><span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="sa">F</span><span class="s2">&quot;part_</span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">no27_keys</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
-
-<span class="c1"># make a df with location slug, landuse label and land use value:</span>
-<span class="k">for</span> <span class="n">a_num</span> <span class="ow">in</span> <span class="n">lu_2000</span><span class="o">.</span><span class="n">AS18_27</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
-    <span class="n">lu_2000</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">lu_2000</span><span class="o">.</span><span class="n">AS18_27</span><span class="o">==</span><span class="n">a_num</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">no27_keys</span><span class="p">[</span><span class="n">a_num</span><span class="p">]</span>
-
-<span class="n">buffer_totals</span> <span class="o">=</span> <span class="n">lu_2000</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;slug&#39;</span><span class="p">,</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">AS18_27</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
-
-<span class="c1"># all locations may not have land use data</span>
-<span class="c1"># identify those locations and give the land use criteria a value of zero for each label</span>
-<span class="n">no_lu_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">dfb</span><span class="o">.</span><span class="n">index</span> <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">buffer_totals</span><span class="o">.</span><span class="n">slug</span><span class="o">.</span><span class="n">unique</span><span class="p">()]</span>
-
-<span class="n">add_these_cols</span> <span class="o">=</span> <span class="n">lu_2000</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
-
-<span class="k">for</span> <span class="n">a_beach</span> <span class="ow">in</span> <span class="n">no_lu_data</span><span class="p">:</span>
-    <span class="k">for</span> <span class="n">a_label</span> <span class="ow">in</span> <span class="n">buffer_totals</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
-        <span class="n">new_row</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;slug&#39;</span><span class="p">:</span><span class="n">a_beach</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span><span class="n">a_label</span><span class="p">,</span> <span class="s1">&#39;AS18_27&#39;</span><span class="p">:</span><span class="mi">0</span><span class="p">}</span>
-        <span class="n">buffer_totals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_row</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="n">locs_2000</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+<div class="output_area">
 
 
-<span class="k">for</span> <span class="n">acol</span> <span class="ow">in</span> <span class="n">add_these_cols</span><span class="p">:</span>
-    <span class="n">locs_2000</span><span class="p">[</span><span class="n">acol</span><span class="p">]</span><span class="o">=</span> <span class="mi">0</span>
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
 
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>p/100m</th>
+      <th>% to buildings</th>
+      <th>% to trans</th>
+      <th>% to recreation</th>
+      <th>% to agg</th>
+      <th>% to woods</th>
+      <th>% to water</th>
+      <th>% to unproductive</th>
+      <th>code</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.0</td>
+      <td>0.504373</td>
+      <td>0.170554</td>
+      <td>0.04519</td>
+      <td>0.240525</td>
+      <td>0.039359</td>
+      <td>0.83965</td>
+      <td>0.0</td>
+      <td>G156</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1.0</td>
+      <td>0.504373</td>
+      <td>0.170554</td>
+      <td>0.04519</td>
+      <td>0.240525</td>
+      <td>0.039359</td>
+      <td>0.83965</td>
+      <td>0.0</td>
+      <td>G28</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>21.0</td>
+      <td>0.504373</td>
+      <td>0.170554</td>
+      <td>0.04519</td>
+      <td>0.240525</td>
+      <td>0.039359</td>
+      <td>0.83965</td>
+      <td>0.0</td>
+      <td>G921</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3.0</td>
+      <td>0.504373</td>
+      <td>0.170554</td>
+      <td>0.04519</td>
+      <td>0.240525</td>
+      <td>0.039359</td>
+      <td>0.83965</td>
+      <td>0.0</td>
+      <td>G178</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5.0</td>
+      <td>0.504373</td>
+      <td>0.170554</td>
+      <td>0.04519</td>
+      <td>0.240525</td>
+      <td>0.039359</td>
+      <td>0.83965</td>
+      <td>0.0</td>
+      <td>G32</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
 
-<span class="k">for</span> <span class="n">beach</span> <span class="ow">in</span> <span class="n">lu_2000</span><span class="o">.</span><span class="n">slug</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
-    <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">no27_keys</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>        
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">new_data</span> <span class="o">=</span> <span class="n">buffer_totals</span><span class="p">[(</span><span class="n">buffer_totals</span><span class="o">.</span><span class="n">slug</span> <span class="o">==</span> <span class="n">beach</span><span class="p">)</span><span class="o">&amp;</span><span class="p">(</span><span class="n">buffer_totals</span><span class="o">.</span><span class="n">label</span> <span class="o">==</span> <span class="n">label</span><span class="p">)]</span><span class="o">.</span><span class="n">AS18_27</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="n">new_data</span> <span class="o">=</span> <span class="mi">0</span>
-        
-        <span class="n">locs_2000</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">beach</span><span class="p">,</span> <span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_data</span>
-        
-<span class="c1"># total land use</span>
-<span class="n">locs_2000</span><span class="p">[</span><span class="s1">&#39;luse_total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">locs_2000</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="nb">list</span><span class="p">(</span><span class="n">no27_keys</span><span class="o">.</span><span class="n">values</span><span class="p">())]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</div>
 
-<span class="c1"># amount attributed to water</span>
-<span class="n">locs_2000</span><span class="p">[</span><span class="s1">&#39;water_value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">locs_2000</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">[</span><span class="s1">&#39;lakes&#39;</span><span class="p">,</span><span class="s1">&#39;rivers&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="c1"># the adjsuted land ues</span>
-<span class="n">locs_2000</span><span class="p">[</span><span class="s1">&#39;adjusted_land_use&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">locs_2000</span><span class="o">.</span><span class="n">luse_total</span> <span class="o">-</span> <span class="n">locs_2000</span><span class="o">.</span><span class="n">water_value</span>
-
-<span class="c1"># divide the total amount for each feature by the adjusted land use</span>
-<span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">no27_keys</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
-    <span class="n">a_label</span> <span class="o">=</span> <span class="sa">F</span><span class="s2">&quot;part_</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">locs_2000</span><span class="p">[</span><span class="n">a_label</span><span class="p">]</span> <span class="o">=</span> <span class="n">locs_2000</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">/</span><span class="n">locs_2000</span><span class="p">[</span><span class="s1">&#39;adjusted_land_use&#39;</span><span class="p">]</span>    
-
-<span class="n">these_groups</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">no27_groups</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-
-<span class="c1"># aggregate the groups</span>
-<span class="k">for</span> <span class="n">a_group</span> <span class="ow">in</span> <span class="n">these_groups</span><span class="p">:</span>
-        <span class="n">part_groups</span> <span class="o">=</span> <span class="p">[</span><span class="n">no27_part</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">no27_groups</span><span class="p">[</span><span class="n">a_group</span><span class="p">]]</span>
-        <span class="n">new_group</span> <span class="o">=</span> <span class="sa">F</span><span class="s2">&quot;% to </span><span class="si">{</span><span class="n">a_group</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="n">locs_2000</span><span class="p">[</span><span class="n">new_group</span><span class="p">]</span> <span class="o">=</span> <span class="n">locs_2000</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="n">part_groups</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="c1"># map land use values to survey results</span>
-<span class="n">som_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;% to buildings&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;% to trans&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;% to recreation&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;% to agg&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;% to woods&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;% to water&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;% to unproductive&#39;</span><span class="p">,</span>
-          
-<span class="p">]</span>
-
-<span class="c1"># iterate through the beach names and assign land use data</span>
-<span class="k">for</span> <span class="n">a_beach</span> <span class="ow">in</span> <span class="n">fd</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
-    <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">som_cols</span><span class="p">:</span>
-        <span class="n">fd</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">fd</span><span class="o">.</span><span class="n">location</span> <span class="o">==</span> <span class="n">a_beach</span><span class="p">,</span> <span class="n">element</span><span class="p">]</span> <span class="o">=</span> <span class="n">locs_2000</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">a_beach</span><span class="p">,</span> <span class="n">element</span><span class="p">]</span>
-        
-
-<span class="n">this_data</span> <span class="o">=</span> <span class="n">fd</span><span class="p">[[</span><span class="n">unit_label</span><span class="p">,</span><span class="o">*</span><span class="n">som_cols</span><span class="p">,</span> <span class="s1">&#39;code&#39;</span><span class="p">]]</span>
-
-<span class="n">abundant_codes</span> <span class="o">=</span> <span class="n">fd</span><span class="p">[</span><span class="n">fd</span><span class="o">.</span><span class="n">quantity</span> <span class="o">&gt;</span> <span class="mi">30</span><span class="p">]</span><span class="o">.</span><span class="n">code</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
-<span class="n">myresults</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">code</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">abundant_codes</span><span class="p">):</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">this_data</span><span class="p">[</span><span class="n">this_data</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">code</span><span class="p">]</span>
-    <span class="n">code_results</span> <span class="o">=</span><span class="p">{</span><span class="n">code</span><span class="p">:{}}</span>
-    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">som_cols</span><span class="p">):</span>
-        <span class="n">corr</span><span class="p">,</span> <span class="n">a_p</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">spearmanr</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="n">unit_label</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">a_p</span> <span class="o">&lt;=</span> <span class="mf">0.05</span><span class="p">:</span>
-            <span class="n">code_results</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">n</span><span class="p">:</span><span class="n">corr</span><span class="p">})</span>
-    <span class="n">myresults</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">code_results</span><span class="p">)</span>
-
-<span class="n">srho_results_2000</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">myresults</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span>
-<span class="n">srho_results_2000</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-      
-</pre></div>
-
-    </div>
 </div>
 </div>
 
@@ -13407,25 +13204,11 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">srho_results_2000</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 <div class="output_wrapper">
 <div class="output">
 
-
 <div class="output_area">
-
-    <div class="prompt output_prompt">Out[4]:</div>
-
 
 
 <div class="output_html rendered_html output_subarea output_execute_result">
@@ -13729,80 +13512,6 @@ div#notebook {
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># make a df with location slug, landuse label and land use value:</span>
-<span class="c1"># Do it again for 2500 meters</span>
-
-<span class="n">lu_2000</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;luse_2500.csv&quot;</span><span class="p">)</span>
-<span class="n">lu_2000</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;location&#39;</span><span class="p">:</span><span class="s1">&#39;slug&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">lu_2000</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">a_num</span> <span class="ow">in</span> <span class="n">lu_2000</span><span class="o">.</span><span class="n">AS18_27</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
-    <span class="n">lu_2000</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">lu_2000</span><span class="o">.</span><span class="n">AS18_27</span><span class="o">==</span><span class="n">a_num</span><span class="p">,</span> <span class="s2">&quot;label&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">no27_keys</span><span class="p">[</span><span class="n">a_num</span><span class="p">]</span>
-
-<span class="n">buffer_totals</span> <span class="o">=</span> <span class="n">lu_2000</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;slug&#39;</span><span class="p">,</span><span class="s1">&#39;label&#39;</span><span class="p">],</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">AS18_27</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
-
-<span class="k">for</span> <span class="n">a_beach</span> <span class="ow">in</span> <span class="n">no_lu_data</span><span class="p">:</span>
-    <span class="k">for</span> <span class="n">a_label</span> <span class="ow">in</span> <span class="n">buffer_totals</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
-        <span class="n">new_row</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;slug&#39;</span><span class="p">:</span><span class="n">a_beach</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">:</span><span class="n">a_label</span><span class="p">,</span> <span class="s1">&#39;AS18_27&#39;</span><span class="p">:</span><span class="mi">0</span><span class="p">}</span>
-        <span class="n">buffer_totals</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_row</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        
-<span class="n">locs_2000</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span> <span class="o">=</span> <span class="n">fd</span><span class="o">.</span><span class="n">location</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
-
-
-<span class="k">for</span> <span class="n">acol</span> <span class="ow">in</span> <span class="n">add_these_cols</span><span class="p">:</span>
-    <span class="n">locs_2000</span><span class="p">[</span><span class="n">acol</span><span class="p">]</span><span class="o">=</span> <span class="mi">0</span>
-
-
-
-<span class="k">for</span> <span class="n">beach</span> <span class="ow">in</span> <span class="n">lu_2000</span><span class="o">.</span><span class="n">slug</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
-    <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">no27_keys</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>        
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">new_data</span> <span class="o">=</span> <span class="n">buffer_totals</span><span class="p">[(</span><span class="n">buffer_totals</span><span class="o">.</span><span class="n">slug</span> <span class="o">==</span> <span class="n">beach</span><span class="p">)</span><span class="o">&amp;</span><span class="p">(</span><span class="n">buffer_totals</span><span class="o">.</span><span class="n">label</span> <span class="o">==</span> <span class="n">label</span><span class="p">)]</span><span class="o">.</span><span class="n">AS18_27</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">except</span><span class="p">:</span>
-            <span class="n">new_data</span> <span class="o">=</span> <span class="mi">0</span>
-        
-        <span class="n">locs_2000</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">beach</span><span class="p">,</span> <span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_data</span>
-        
-<span class="c1"># total land use</span>
-<span class="n">locs_2000</span><span class="p">[</span><span class="s1">&#39;luse_total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">locs_2000</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="nb">list</span><span class="p">(</span><span class="n">no27_keys</span><span class="o">.</span><span class="n">values</span><span class="p">())]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="c1"># amount attributed to water</span>
-<span class="n">locs_2000</span><span class="p">[</span><span class="s1">&#39;water_value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">locs_2000</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">[</span><span class="s1">&#39;lakes&#39;</span><span class="p">,</span><span class="s1">&#39;rivers&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="c1"># the adjsuted land ues</span>
-<span class="n">locs_2000</span><span class="p">[</span><span class="s1">&#39;adjusted_land_use&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">locs_2000</span><span class="o">.</span><span class="n">luse_total</span> <span class="o">-</span> <span class="n">locs_2000</span><span class="o">.</span><span class="n">water_value</span>
-
-<span class="c1"># divide the total amount for each feature by the adjusted land use</span>
-<span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">no27_keys</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
-    <span class="n">a_label</span> <span class="o">=</span> <span class="sa">F</span><span class="s2">&quot;part_</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">locs_2000</span><span class="p">[</span><span class="n">a_label</span><span class="p">]</span> <span class="o">=</span> <span class="n">locs_2000</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">/</span><span class="n">locs_2000</span><span class="p">[</span><span class="s1">&#39;adjusted_land_use&#39;</span><span class="p">]</span>    
-
-<span class="n">these_groups</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">no27_groups</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-
-<span class="c1"># aggregate the groups</span>
-<span class="k">for</span> <span class="n">a_group</span> <span class="ow">in</span> <span class="n">these_groups</span><span class="p">:</span>
-        <span class="n">part_groups</span> <span class="o">=</span> <span class="p">[</span><span class="n">no27_part</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">no27_groups</span><span class="p">[</span><span class="n">a_group</span><span class="p">]]</span>
-        <span class="n">new_group</span> <span class="o">=</span> <span class="sa">F</span><span class="s2">&quot;% to </span><span class="si">{</span><span class="n">a_group</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="n">locs_2000</span><span class="p">[</span><span class="n">new_group</span><span class="p">]</span> <span class="o">=</span> <span class="n">locs_2000</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span><span class="n">part_groups</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        
-
-<span class="n">myresults</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">code</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">abundant_codes</span><span class="p">):</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">this_data</span><span class="p">[</span><span class="n">this_data</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">code</span><span class="p">]</span>
-    <span class="n">code_results</span> <span class="o">=</span><span class="p">{</span><span class="n">code</span><span class="p">:{}}</span>
-    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">som_cols</span><span class="p">):</span>
-        <span class="n">corr</span><span class="p">,</span> <span class="n">a_p</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">spearmanr</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">n</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="n">unit_label</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">a_p</span> <span class="o">&lt;=</span> <span class="mf">0.05</span><span class="p">:</span>
-            <span class="n">code_results</span><span class="p">[</span><span class="n">code</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">n</span><span class="p">:</span><span class="n">corr</span><span class="p">})</span>
-    <span class="n">myresults</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">code_results</span><span class="p">)</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
@@ -13814,27 +13523,11 @@ div#notebook {
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">srho_results_2500</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">myresults</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span>
-<span class="n">srho_results_2500</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">srho_results_2500</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 <div class="output_wrapper">
 <div class="output">
 
-
 <div class="output_area">
-
-    <div class="prompt output_prompt">Out[6]:</div>
-
 
 
 <div class="output_html rendered_html output_subarea output_execute_result">
@@ -13861,177 +13554,167 @@ div#notebook {
       <th>% to recreation</th>
       <th>% to agg</th>
       <th>% to woods</th>
-      <th>% to water</th>
       <th>% to unproductive</th>
+      <th>% to water</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>G27</th>
-      <td>0.333677</td>
-      <td>0.359557</td>
-      <td>0.302469</td>
-      <td>-0.284461</td>
-      <td>-0.164146</td>
-      <td>0.123172</td>
-      <td>-0.298779</td>
+      <td>0.338808</td>
+      <td>0.353151</td>
+      <td>0.289665</td>
+      <td>-0.300856</td>
+      <td>-0.160632</td>
+      <td>-0.331526</td>
+      <td>X</td>
     </tr>
     <tr>
       <th>G95</th>
-      <td>0.133874</td>
-      <td>0.187697</td>
-      <td>0.195286</td>
-      <td>-0.151915</td>
+      <td>0.151636</td>
+      <td>0.191291</td>
+      <td>0.169331</td>
+      <td>-0.138672</td>
       <td>X</td>
-      <td>0.124518</td>
-      <td>-0.169153</td>
+      <td>-0.20954</td>
+      <td>0.152909</td>
     </tr>
     <tr>
       <th>G30</th>
-      <td>0.259606</td>
-      <td>0.277116</td>
-      <td>0.275198</td>
-      <td>-0.202422</td>
-      <td>-0.133838</td>
-      <td>X</td>
-      <td>X</td>
+      <td>0.259458</td>
+      <td>0.273768</td>
+      <td>0.263673</td>
+      <td>-0.17438</td>
+      <td>-0.114198</td>
+      <td>-0.130139</td>
+      <td>0.102261</td>
     </tr>
     <tr>
       <th>G67</th>
-      <td>-0.128185</td>
+      <td>-0.123343</td>
       <td>X</td>
       <td>X</td>
       <td>X</td>
-      <td>X</td>
+      <td>0.104952</td>
       <td>X</td>
       <td>X</td>
     </tr>
     <tr>
       <th>G112</th>
-      <td>0.102842</td>
-      <td>0.105651</td>
-      <td>0.156375</td>
+      <td>0.133958</td>
       <td>X</td>
+      <td>0.153405</td>
       <td>X</td>
+      <td>-0.111106</td>
       <td>X</td>
       <td>X</td>
     </tr>
     <tr>
       <th>G200</th>
-      <td>0.191516</td>
+      <td>0.157847</td>
+      <td>0.111638</td>
+      <td>0.118095</td>
+      <td>-0.235673</td>
       <td>X</td>
-      <td>0.11617</td>
-      <td>-0.21987</td>
       <td>X</td>
-      <td>0.241411</td>
-      <td>X</td>
+      <td>0.221714</td>
     </tr>
     <tr>
       <th>G178</th>
-      <td>0.361203</td>
-      <td>0.35621</td>
-      <td>0.257235</td>
-      <td>-0.310423</td>
-      <td>-0.126493</td>
+      <td>0.357067</td>
+      <td>0.344676</td>
+      <td>0.260189</td>
+      <td>-0.307018</td>
+      <td>-0.132225</td>
+      <td>-0.320133</td>
       <td>X</td>
-      <td>-0.326207</td>
     </tr>
     <tr>
       <th>G25</th>
-      <td>0.134717</td>
-      <td>0.110049</td>
-      <td>0.134953</td>
-      <td>-0.10919</td>
+      <td>0.12763</td>
+      <td>0.116756</td>
+      <td>0.12492</td>
       <td>X</td>
-      <td>0.130293</td>
       <td>X</td>
+      <td>X</td>
+      <td>0.116392</td>
     </tr>
     <tr>
       <th>G98</th>
-      <td>0.103159</td>
-      <td>0.181116</td>
-      <td>0.215513</td>
-      <td>-0.172881</td>
+      <td>0.110209</td>
+      <td>0.176887</td>
+      <td>0.202598</td>
+      <td>-0.180012</td>
       <td>X</td>
-      <td>X</td>
+      <td>-0.116251</td>
       <td>X</td>
     </tr>
     <tr>
       <th>G73</th>
-      <td>0.129071</td>
-      <td>0.103307</td>
+      <td>0.135705</td>
+      <td>0.122102</td>
       <td>X</td>
       <td>X</td>
       <td>X</td>
+      <td>-0.109623</td>
       <td>X</td>
-      <td>X</td>
-    </tr>
-    <tr>
-      <th>G923</th>
-      <td>0.100241</td>
-      <td>0.108419</td>
-      <td>0.105783</td>
-      <td>-0.110296</td>
-      <td>X</td>
-      <td>X</td>
-      <td>-0.107999</td>
     </tr>
     <tr>
       <th>Gfrags</th>
-      <td>0.112471</td>
-      <td>0.104783</td>
-      <td>0.17202</td>
-      <td>-0.139831</td>
+      <td>0.111271</td>
       <td>X</td>
-      <td>0.107763</td>
+      <td>0.141226</td>
+      <td>-0.136106</td>
       <td>X</td>
+      <td>X</td>
+      <td>0.113952</td>
     </tr>
     <tr>
       <th>G208</th>
       <td>X</td>
-      <td>0.128866</td>
+      <td>0.103296</td>
       <td>X</td>
-      <td>-0.11147</td>
-      <td>-0.140369</td>
+      <td>-0.120636</td>
+      <td>-0.140045</td>
+      <td>-0.113657</td>
       <td>X</td>
-      <td>-0.133486</td>
     </tr>
     <tr>
       <th>G74</th>
       <td>X</td>
-      <td>0.110512</td>
-      <td>0.133194</td>
-      <td>-0.191128</td>
+      <td>0.11078</td>
       <td>X</td>
+      <td>-0.214946</td>
       <td>X</td>
-      <td>-0.171274</td>
-    </tr>
-    <tr>
-      <th>G106</th>
-      <td>X</td>
-      <td>X</td>
-      <td>0.128695</td>
-      <td>-0.10967</td>
-      <td>X</td>
-      <td>X</td>
-      <td>X</td>
+      <td>-0.181772</td>
+      <td>0.113653</td>
     </tr>
     <tr>
       <th>G941</th>
       <td>X</td>
       <td>X</td>
-      <td>0.155223</td>
+      <td>0.155191</td>
       <td>X</td>
-      <td>0.108906</td>
+      <td>0.163119</td>
+      <td>0.187309</td>
       <td>X</td>
-      <td>0.224341</td>
+    </tr>
+    <tr>
+      <th>G923</th>
+      <td>X</td>
+      <td>X</td>
+      <td>0.105077</td>
+      <td>-0.118244</td>
+      <td>X</td>
+      <td>X</td>
+      <td>X</td>
     </tr>
     <tr>
       <th>G117</th>
       <td>X</td>
       <td>X</td>
       <td>X</td>
-      <td>-0.151559</td>
+      <td>-0.143826</td>
       <td>X</td>
       <td>X</td>
       <td>X</td>
@@ -14041,17 +13724,17 @@ div#notebook {
       <td>X</td>
       <td>X</td>
       <td>X</td>
-      <td>-0.136098</td>
-      <td>0.126791</td>
-      <td>-0.107082</td>
+      <td>-0.132516</td>
+      <td>0.117502</td>
       <td>X</td>
+      <td>-0.107314</td>
     </tr>
     <tr>
       <th>G21</th>
       <td>X</td>
       <td>X</td>
       <td>X</td>
-      <td>-0.14468</td>
+      <td>-0.124697</td>
       <td>X</td>
       <td>X</td>
       <td>X</td>
@@ -14061,17 +13744,7 @@ div#notebook {
       <td>X</td>
       <td>X</td>
       <td>X</td>
-      <td>-0.160052</td>
-      <td>X</td>
-      <td>X</td>
-      <td>X</td>
-    </tr>
-    <tr>
-      <th>G22</th>
-      <td>X</td>
-      <td>X</td>
-      <td>X</td>
-      <td>-0.109336</td>
+      <td>-0.167205</td>
       <td>X</td>
       <td>X</td>
       <td>X</td>
@@ -14081,8 +13754,8 @@ div#notebook {
       <td>X</td>
       <td>X</td>
       <td>X</td>
+      <td>-0.107369</td>
       <td>X</td>
-      <td>0.107746</td>
       <td>X</td>
       <td>X</td>
     </tr>
@@ -14092,7 +13765,7 @@ div#notebook {
       <td>X</td>
       <td>X</td>
       <td>X</td>
-      <td>0.11721</td>
+      <td>0.122497</td>
       <td>X</td>
       <td>X</td>
     </tr>
@@ -14103,8 +13776,8 @@ div#notebook {
       <td>X</td>
       <td>X</td>
       <td>X</td>
-      <td>0.162473</td>
       <td>X</td>
+      <td>0.181244</td>
     </tr>
     <tr>
       <th>Gfoam</th>
@@ -14113,18 +13786,8 @@ div#notebook {
       <td>X</td>
       <td>X</td>
       <td>X</td>
-      <td>0.130208</td>
-      <td>-0.117913</td>
-    </tr>
-    <tr>
-      <th>G10</th>
       <td>X</td>
-      <td>X</td>
-      <td>X</td>
-      <td>X</td>
-      <td>X</td>
-      <td>X</td>
-      <td>-0.107886</td>
+      <td>0.176714</td>
     </tr>
   </tbody>
 </table>
@@ -14138,16 +13801,6 @@ div#notebook {
 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
-</pre></div>
-
-    </div>
-</div>
-</div>
 
 </div>
     </div>
