@@ -1,0 +1,16 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: titlepage
+options:
+    numbered: True
+chapters:
+- file: bielersee_results
+- file: lac_leman
+- file: project_results
+- file: consider_distance_to_river
+   
+    
+   
+ 
