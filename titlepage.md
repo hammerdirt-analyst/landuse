@@ -23,4 +23,4 @@ notably in terms of abundance, composition and origin of items.
 
 __Authors:__ Louise Schreyers, Roger Erismann, Montserrat Filella, Christian Ludwig
 
-for information regarding the contents of this document conata analyst@hammerdirt.ch
+For information regarding the contents of this document conata analyst@hammerdirt.ch
