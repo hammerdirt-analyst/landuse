@@ -2,9 +2,19 @@
 
 Data from a national beach litter survey of lakes and rivers is compared to landuse using Spearmans rank correlation coeffeicient. Spearmans Rho is easy to implement in python or a spreadsheet and may serve as an initial automated assessment for local administrations when considering the results of beach litter surveys.
 
-The value of Rho is defined for all objects that reach a quantity threshold with landuse categories defined by the National Statistical Survey. The density of the objects was tested against each landuse category within a defined distance from the location of the survey. The operation is repeated for surveys 1.5km - 5km, every .5km and 10km.
+The value of Rho is defined for selected objects that reach a user defined frequency (ratio of samples where some were found / the number of samples) or density (number of objects/100 m) threshhold. The frequency or abundance is considered with respect to the landuse categories defined by the Swiss National Statistical Survey. The threshold values were tested against diffrent buffer zones around the survey locations.
+
+_Measuring land use_
+:::{image} resources/images/land_use_dispaly_20.jpeg
+:alt: Map of IQAASL locations
+:class: bg-primary mb-1
+:width: 1200px
+:align: center
+:::
 
 ## Contents
+
+__Note:__ These are large files. Git Large File Storage (Git LFS) is enabled, if the .csv files do not download check [Git LFS](https://git-lfs.com/)
 
 ### Resources
 
@@ -12,9 +22,18 @@ The value of Rho is defined for all objects that reach a quantity threshold with
 
 ### Notebooks
 
-* _spearmansrho_luse.ipynb:_ the current version of the anaysis and the results
+#### Spearmans Rho for one lake and one radius:
 
-* _land_use_one.ipynb:_ the original notes for completing the analysis
+1. bielersee_results.ipynb
+2. lac_leman.ipynb
+
+#### Spearmans Rho for all locations:
+
+1. project_results.ipynb
+
+#### Lenth to discharge point and length of river section:
+
+1. consider_distance_to_river.ipynb
 
 The data was collected as part of publicly funded project. Please acknowledg appropriately.
 
