@@ -3,7 +3,6 @@
 
 title: Near or far
 author: Schreyer et all
-logo: resources/images/titlepage.jpg
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
