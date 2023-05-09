@@ -5,12 +5,7 @@ Data from a national beach litter survey of lakes and rivers is compared to land
 The value of Rho is defined for selected objects that reach a user defined frequency (ratio of samples where some were found / the number of samples) or density (number of objects/100 m) threshhold. The frequency or abundance is considered with respect to the landuse categories defined by the Swiss National Statistical Survey. The threshold values were tested against diffrent buffer zones around the survey locations.
 
 _Measuring land use_
-:::{image} resources/images/land_use_dispaly_20.jpeg
-:alt: Map of IQAASL locations
-:class: bg-primary mb-1
-:width: 1200px
-:align: center
-:::
+![distance to intersection](https://github.com/hammerdirt-analyst/landuse/blob/main/resources/images/stream_length_buffer_land_use.jpeg)
 
 ## Contents
 
