@@ -25,10 +25,15 @@ __Note:__ These are large files. Git Large File Storage (Git LFS) is enabled, if
 #### Spearmans Rho for all locations:
 
 1. project_results.ipynb
+2. hex-3000-m.ipynb: the test at 1'500 m was is repeated with the most recent map values 
 
 #### Lenth to discharge point and length of river section:
 
 1. consider_distance_to_river.ipynb
+
+#### Probability - logistic regression
+
+1. probability.ipynb
 
 The data was collected as part of publicly funded project. Please acknowledg appropriately.
 
