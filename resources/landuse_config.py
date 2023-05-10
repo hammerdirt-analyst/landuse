@@ -19,8 +19,11 @@ def surface_area_of_feature(data, locations, columns):
 
 
 def account_for_undefined(data, var_col="OBJVAL", var_label="Undefined", metric="surface", total_metric=None):
+    
     data[var_col] = var_label
-    data[metric] = total_metric - data[metric]
+    data["TEMP"] = total_metric - data[metric]
+    data[metric] = data["TEMP"]
+    data.drop("TEMP", axis=1, inplace=True)
     
     return data
 
@@ -179,6 +182,8 @@ class LandUseValues:
         # https://www.swisstopo.admin.ch/fr/geodata/landscape/tlm3d.html#dokumente
         defined_land_cover = surface_area_of_feature(self.data_map, self.locations, self.columns)
         
+        # print(defined_land_cover)
+        
         # there are areas on the map that are not defined by a category.
         # the total surface area of all categories is subtracted from
         # the surface area of a 3000m hex = 5845672
@@ -193,6 +198,7 @@ class LandUseValues:
         # survey data, keyed on location
         kwargs = dict(data=land_cover, locations=self.locations, columns=self.id_vals, to_aggregate=self.to_aggregate)
         al_locations = collectAndPivot(**kwargs)
+        
         
         self.land_cover = al_locations
     
@@ -232,6 +238,7 @@ class TestResultsAndLandUse(LandUseValues):
         super().__init__(**kwargs)
     
     def test_and_merge(self, cover: bool = True):
+        
         
         tested = test_one_object(self.to_test, self.threshhold, self.merge_column)
         
@@ -356,6 +363,7 @@ class LanduseConfiguration:
             d.define_total_length(label=self.label)
         if self.cover is True:
             d.assign_undefined()
+            # print(d.land_cover)
         if self.regional_label is not None:
             dg = d.make_groups_test_presence(regional_label=self.regional_label, label_map=self.label_map)
         else:
@@ -483,7 +491,6 @@ def inferenceTableForOneLocation(name: str = None, lake: str = None, conf: tuple
             p = (pkn + 1) / (pnn + 2)
         else:
             p = pkn/pnn
-    
     passed_prior = (1 - p)*passed
     failed_prior = p*failed
     inf = failed_prior / (passed_prior + failed_prior)

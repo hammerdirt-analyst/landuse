@@ -310,7 +310,7 @@ document.write(`
 <p>Notes and calculations for the manuscript <em><strong>Near or Far: Revealing the role of land-use on macrolitter
 distribution in Swiss freshwater</strong></em></p>
 <p><em>ver=0.01</em></p>
-<p><em>Suvey locations April - August 2021</em></p>
+<p><em>Suvey locations April - August 2021 source:</em> <a class="reference external" href="https://hammerdirt-analyst.github.io/IQAASL-End-0f-Sampling-2021/index.html">IQAASL</a></p>
 <a class="bg-primary mb-1 reference internal image-reference" href="_images/intro_map.jpeg"><img alt="Map of IQAASL locations" class="bg-primary mb-1 align-center" src="_images/intro_map.jpeg" style="width: 1200px;" /></a>
 <div class="section" id="abstract">
 <h2>Abstract<a class="headerlink" href="#abstract" title="Permalink to this headline">#</a></h2>
@@ -321,12 +321,14 @@ notably in terms of abundance, composition and origin of items.</p>
 </div>
 <div class="section" id="purpose">
 <h2>Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline">#</a></h2>
-<p>This document details the methods used for the land use chapter of the IQAASL report and expands the analysis to include distance to river intersections and length of river network. In section 4 a 3’000 m hex buffer is substituted for a 1’500 m radius buffer and the most recent publicly available map layers are substitued for the previous versions. The purpose can be summarized as follows:</p>
+<p>This document details the methods used for the land use chapter of the IQAASL report and expands the analysis to include distance to river intersections and length of river network. The environmental conditions are approximated by calculating the land-use conditions within a buffer of r=1’500 m around each survey location. The data is extracted from <a class="reference external" href="https://www.swisstopo.admin.ch/de/geodata/landscape/tlmregio.html">swissTLMRegio</a> using the predefined land use categories in the corresponding vector layers. In section 4 the measured distance from a survey location to any river intersections within the buffer is measured as well as the total length of any intersecting rivers in the buffer. In section five the land-use is calculated with a hexagon shaped buffer (as opposed to circular buffer), and the most recent publicly available map layers are substitued for the previous versions used in the first three sections. The purpose can be summarized as follows:</p>
 <ol class="arabic simple">
 <li><p>review the previous analysis</p></li>
 <li><p>add to the previous analysis by selecting objects based on abundance or frequency</p></li>
 <li><p>determine if length and distance to river intersection is a better indicator of pollution source than just the number of intersections</p></li>
-<li><p>Quantify the analysis in terms of number of objects accounted for</p></li>
+<li><p>quantify the analysis in terms of number of objects accounted for</p></li>
+<li><p>update the inferences using the new map layers</p></li>
+<li><p>establish the method for infering trash densities using survey results and environmental conditions</p></li>
 <li><p>Compare the results of Spearmans Rho to those from a Bayesien inference table</p></li>
 </ol>
 </div>

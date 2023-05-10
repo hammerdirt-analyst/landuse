@@ -5,7 +5,7 @@ distribution in Swiss freshwater__*
 
 _ver=0.01_
 
-_Suvey locations April - August 2021_
+_Suvey locations April - August 2021 source:_ [IQAASL](https://hammerdirt-analyst.github.io/IQAASL-End-0f-Sampling-2021/index.html)
 :::{image} resources/images/intro_map.jpeg
 :alt: Map of IQAASL locations
 :class: bg-primary mb-1
@@ -23,12 +23,14 @@ notably in terms of abundance, composition and origin of items.
 
 ## Purpose
 
-This document details the methods used for the land use chapter of the IQAASL report and expands the analysis to include distance to river intersections and length of river network. In section 4 a 3'000 m hex buffer is substituted for a 1'500 m radius buffer and the most recent publicly available map layers are substitued for the previous versions. The purpose can be summarized as follows:
+This document details the methods used for the land use chapter of the IQAASL report and expands the analysis to include distance to river intersections and length of river network. The environmental conditions are approximated by calculating the land-use conditions within a buffer of r=1'500 m around each survey location. The data is extracted from [swissTLMRegio](https://www.swisstopo.admin.ch/de/geodata/landscape/tlmregio.html) using the predefined land use categories in the corresponding vector layers. In section 4 the measured distance from a survey location to any river intersections within the buffer is measured as well as the total length of any intersecting rivers in the buffer. In section five the land-use is calculated with a hexagon shaped buffer (as opposed to circular buffer), and the most recent publicly available map layers are substitued for the previous versions used in the first three sections. The purpose can be summarized as follows:
 
 1. review the previous analysis
 2. add to the previous analysis by selecting objects based on abundance or frequency
 3. determine if length and distance to river intersection is a better indicator of pollution source than just the number of intersections
-4. Quantify the analysis in terms of number of objects accounted for
+4. quantify the analysis in terms of number of objects accounted for
+5. update the inferences using the new map layers
+6. establish the method for infering trash densities using survey results and environmental conditions
 5. Compare the results of Spearmans Rho to those from a Bayesien inference table
 
 ## Introduction
