@@ -458,6 +458,7 @@ def inferenceTableForOneLocation(name: str = None, lake: str = None, conf: tuple
                                  prior: float = None, conf_names: list = None, drop_vals: tuple = None):
     # h1 the threshold was exceeded at the location given the land use values
     # likelihood of exceeding the threshold given the land use in that hex
+    # print(name)
     lk, ln = select_a_land_use_conf(conf=conf, p_tables=p_tables, vals_to_drop=drop_vals)
     failed = lk / ln
     # h2 the threshold was not exceeded with that land use configuration
