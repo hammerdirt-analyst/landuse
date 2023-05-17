@@ -93,6 +93,7 @@ def test_threshhold(data, threshold, gby_column):
     passed.name = "n-k"
     
     ratio = exceeded / tested
+    
     ratio.name = 'k/n'
     
     return exceeded, tested, passed, ratio
