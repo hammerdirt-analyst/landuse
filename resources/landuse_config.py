@@ -408,7 +408,7 @@ def select_a_land_use_conf(conf, p_tables: dict = None, vals_to_drop: tuple = No
     in the conf. Example if a locations has conf (0,1,2,3,4)  and another location has conf
     (2,3,4,5,6) then land-use categories 2, 3, 4 are only counted once.
 
-    returns a tuple k=success and n=trials
+    returns: a tuple k=success and n=trials
     """
     
     k = 0

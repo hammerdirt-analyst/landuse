@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>6. Probability and land-use &#8212; Near or far</title>
+    <title>7. Probability and land-use &#8212; Near or far</title>
   
   
   
@@ -64,7 +64,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script>DOCUMENTATION_OPTIONS.pagename = 'probability';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="5. All Data – New map data" href="hex-3000-m.html" />
+    <link rel="prev" title="6. Rivers: new map data" href="hex-3000-m-rivers.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -146,8 +146,9 @@ const thebe_selector_output = ".output, .cell_output"
 <li class="toctree-l1"><a class="reference internal" href="lac_leman.html">2. Lac Léman</a></li>
 <li class="toctree-l1"><a class="reference internal" href="project_results.html">3. All Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="consider_distance_to_river.html">4. River and lake intersections</a></li>
-<li class="toctree-l1"><a class="reference internal" href="hex-3000-m.html">5. All Data – New map data</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">6. Probability and land-use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hex-3000-m.html">5. Lakes: new map data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hex-3000-m-rivers.html">6. Rivers: new map data</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">7. Probability and land-use</a></li>
 </ul>
 
     </div>
@@ -293,38 +294,38 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">6.1. Motivation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#proposition">6.1.1. Proposition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">7.1. Motivation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#proposition">7.1.1. Proposition</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods-of-inference">6.2. Methods of inference</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#binomial-distribution">6.2.1. Binomial distribution</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#odds-and-log-odds">6.2.2. Odds and log odds</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods-of-inference">7.2. Methods of inference</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#binomial-distribution">7.2.1. Binomial distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#odds-and-log-odds">7.2.2. Odds and log odds</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables">6.3. Variables</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">6.4. Data</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#survey-data">6.4.1. Survey data</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-land-use-data">6.4.2. The land use data</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#aggregating-scaling-and-binning">6.4.2.1. Aggregating, scaling and binning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables">7.3. Variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">7.4. Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#survey-data">7.4.1. Survey data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-land-use-data">7.4.2. The land use data</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#aggregating-scaling-and-binning">7.4.2.1. Aggregating, scaling and binning</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-the-threshold">6.5. Testing the threshold</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-odds-and-frequency-of-exceeding-the-threshold">6.5.1. The odds and frequency of exceeding the threshold</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-probability-of-exceeding-the-threshold">6.5.2. The probability of exceeding the threshold</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-prior">6.5.2.1. The prior</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-the-threshold">7.5. Testing the threshold</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-odds-and-frequency-of-exceeding-the-threshold">7.5.1. The odds and frequency of exceeding the threshold</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-probability-of-exceeding-the-threshold">7.5.2. The probability of exceeding the threshold</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-prior">7.5.2.1. The prior</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#logistic-regression">6.5.3. Logistic regression</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#infrastructure">6.5.4. Infrastructure</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#urbanization">6.5.5. Urbanization</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forest">6.5.6. Forest</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#undefined">6.5.7. Undefined</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recreation">6.5.8. Recreation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distance-to-river-intersection">6.5.9. Distance to river intersection</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#length-of-river-intersects">6.5.10. Length of river intersects</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#logistic-regression">7.5.3. Logistic regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#infrastructure">7.5.4. Infrastructure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#urbanization">7.5.5. Urbanization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forest">7.5.6. Forest</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#undefined">7.5.7. Undefined</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recreation">7.5.8. Recreation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distance-to-river-intersection">7.5.9. Distance to river intersection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#length-of-river-intersects">7.5.10. Length of river intersects</a></li>
 </ul>
 </li>
 </ul>
@@ -339,15 +340,15 @@ document.write(`
                 <article class="bd-article" role="main">
                   
   <div class="tex2jax_ignore mathjax_ignore section" id="probability-and-land-use">
-<h1><span class="section-number">6. </span>Probability and land-use<a class="headerlink" href="#probability-and-land-use" title="Permalink to this headline">#</a></h1>
+<h1><span class="section-number">7. </span>Probability and land-use<a class="headerlink" href="#probability-and-land-use" title="Permalink to this headline">#</a></h1>
 <p><em>draft: need to add definition and method for logistic regression, revising river intersection and lenghts</em></p>
 <p>The introduction of a threshhold value for beach-litter density by the EU and the reasons for the application of that threshhold mark a change in the importance and use of beach litter data. Prior to the establishment of a threshold the primary use of beach-litter data was to <em>educate</em> the public and in some instances define a link with mortality and mobidity of marine species. At present beach-litter survey results are also considered on the numerical distance from a stated goal. That goal is defined in <strong>pieces of trash for every 100 m</strong>. The goal is based on principal of precaution, that means we are unsure of the long term consequences and it would be best to minimize exposure if possible.<a class="reference external" href="https://mcc.jrc.ec.europa.eu/main/dev.py?N=41&amp;O=454">EU Threshold Value for Macro Litter on Coastlines</a></p>
 <p>With the announcement of threshhold value <strong>there was no subsequent recomendation for changing the methods of sampling</strong>. Consequently, this environmental assessment relies on the recorded observations of volunteers following a standard protocol. According to the journal <a class="reference external" href="https://www.nature.com/articles/s41893-019-0390-3">Nature</a>, programs that include the involvement of citizens in scientific research and/or knowledge production, can complement and ultimately improve the Sustainale Development Goals (SDG) reporting process. Beach litter applies specifically to SDG 14, <strong>the target of achieving substantial reductions in marine pollution</strong>.</p>
 <div class="section" id="motivation">
-<h2><span class="section-number">6.1. </span>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.1. </span>Motivation<a class="headerlink" href="#motivation" title="Permalink to this headline">#</a></h2>
 <p>Each encounter is local by definition (the location can be defined by a GPS point) and the time/date is unique for each survey for each person, or group of people doing a survey. Often the people that conduct the survey are beach-users themselves and local to the region. The encounter is the result of the desire of the person to remove these objects from the environment. <strong>That is, the motivation to remove the object was present before the desire to record its existence</strong>.</p>
 <div class="section" id="proposition">
-<h3><span class="section-number">6.1.1. </span>Proposition<a class="headerlink" href="#proposition" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">7.1.1. </span>Proposition<a class="headerlink" href="#proposition" title="Permalink to this headline">#</a></h3>
 <ol class="arabic simple">
 <li><p>Data from beach litter surveys can be used to estimate survey results at a local level.</p>
 <ol class="arabic simple">
@@ -370,10 +371,10 @@ document.write(`
 </div>
 </div>
 <div class="section" id="methods-of-inference">
-<h2><span class="section-number">6.2. </span>Methods of inference<a class="headerlink" href="#methods-of-inference" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.2. </span>Methods of inference<a class="headerlink" href="#methods-of-inference" title="Permalink to this headline">#</a></h2>
 <p>The method of data collection asuggests a mathematical method of interpretation and analysis that is appropriate to real systems, can be tested empirically and allows reasonbale people to arrive at reasonable conclusions. Fortunately we don’t need to invent a method, there are several appropriate techniques for arriving at a consensus estimate of a requested metric. (Maxwell, La Place, Bayes, Jaynes, Gelman, Savage).</p>
 <div class="section" id="binomial-distribution">
-<h3><span class="section-number">6.2.1. </span>Binomial distribution<a class="headerlink" href="#binomial-distribution" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">7.2.1. </span>Binomial distribution<a class="headerlink" href="#binomial-distribution" title="Permalink to this headline">#</a></h3>
 <p>In the previous sections we were concerned with defining the relationship between the land use profile and the density of litter identified. This definition we limited to defining wether or not the quantity or magnitude of a type of land use was montotonic with litter density and if so what was the direction positive or negative. In this section, the question is more detailed and more specific:</p>
 <ol class="arabic simple">
 <li><p>How likely is a survey result to exceed a value given the land use profile of the survey location ?</p></li>
@@ -388,13 +389,13 @@ document.write(`
 <p>This metric was introduced in the federal report as the fail-rate: <em>the number of times that at least one of an object was found at a survey</em>, all landuse values were consiered equal. This allowed us to select ojects of interest using frequency as a metric as well as quantity or density. Thus, it is easy to identify objects that are found frequently but not in large quantities. In this form the fail rate is also the most likely estimate (MLE) of the parameter <em>p</em> for the <a class="reference external" href="https://en.wikipedia.org/wiki/Binomial_distribution">binomial distribution</a> that describes the probability of finding at least one of a requested object at a survey. How the fail rate can be used to determine a range of probable values for any object at any location was defined in, <a class="reference external" href="https://hammerdirt-analyst.github.io/finding-one-object/titlepage.html">finding one object</a>, the example was feminine hygiene products.</p>
 </div>
 <div class="section" id="odds-and-log-odds">
-<h3><span class="section-number">6.2.2. </span>Odds and log odds<a class="headerlink" href="#odds-and-log-odds" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">7.2.2. </span>Odds and log odds<a class="headerlink" href="#odds-and-log-odds" title="Permalink to this headline">#</a></h3>
 <p>The odds of success are defined as the number of times that a test had a positive result v/s the number of times that the results were negative, or <em>k/(n-k)</em>. The probability of success can also be given as an <em>odds ratio:</em> the probability of success divided by the probability of failure or <span class="math notranslate nohighlight">\(\frac{p}{1-p}\)</span>, where <span class="math notranslate nohighlight">\(p\)</span> = the probability of success. Therefore, the log odds are <em>ln(</em><span class="math notranslate nohighlight">\(\frac{p}{1-p}\)</span><em>)</em> or <a class="reference external" href="https://en.wikipedia.org/wiki/Logit">Logit</a>.</p>
 <p>The log odds are used in <a class="reference external" href="https://en.wikipedia.org/wiki/Logistic_regression">logistic regression</a>, a commonly used method to model binary variables with multiple independent variables. In the case of beach litter data we are modeling the binary variable: “Did the survey result exceed the threshold?. Commonly used in machine learning models, logistic regression is often part of classification or labeling processes.</p>
 </div>
 </div>
 <div class="section" id="variables">
-<h2><span class="section-number">6.3. </span>Variables<a class="headerlink" href="#variables" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.3. </span>Variables<a class="headerlink" href="#variables" title="Permalink to this headline">#</a></h2>
 <ol class="arabic simple">
 <li><p>independent variables: m² of each land use category, m of roads, m of rivers that intersect, m to river intersection point</p></li>
 <li><p>outcome variable: binary, wether or not the threshold was exceeded at a survey</p></li>
@@ -403,9 +404,9 @@ document.write(`
 <p><strong>We assume that the land-use adjacent to the survey location and magnitudes of local river inputs are predictor varaibles for the amount of trash found on the shore line</strong>.</p>
 </div>
 <div class="section" id="data">
-<h2><span class="section-number">6.4. </span>Data<a class="headerlink" href="#data" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.4. </span>Data<a class="headerlink" href="#data" title="Permalink to this headline">#</a></h2>
 <div class="section" id="survey-data">
-<h3><span class="section-number">6.4.1. </span>Survey data<a class="headerlink" href="#survey-data" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">7.4.1. </span>Survey data<a class="headerlink" href="#survey-data" title="Permalink to this headline">#</a></h3>
 <p>The samples from the period 2020-2021 (IQAASL) for the following lakes are considered:</p>
 <ul class="simple">
 <li><p>Zurichsee</p></li>
@@ -730,10 +731,10 @@ document.write(`
 </div>
 </div>
 <div class="section" id="the-land-use-data">
-<h3><span class="section-number">6.4.2. </span>The land use data<a class="headerlink" href="#the-land-use-data" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">7.4.2. </span>The land use data<a class="headerlink" href="#the-land-use-data" title="Permalink to this headline">#</a></h3>
 <p>How the land use is extracted from the map layers and schematic was demonstrated in the sections New Map data and River and Lake intersections.</p>
 <div class="section" id="aggregating-scaling-and-binning">
-<h4><span class="section-number">6.4.2.1. </span>Aggregating, scaling and binning<a class="headerlink" href="#aggregating-scaling-and-binning" title="Permalink to this headline">#</a></h4>
+<h4><span class="section-number">7.4.2.1. </span>Aggregating, scaling and binning<a class="headerlink" href="#aggregating-scaling-and-binning" title="Permalink to this headline">#</a></h4>
 <p><strong>Aggregating the land use values:</strong> For land-cover objects the surface area of the polygon that defines each land use attribute that is bounded by the location hexagon is summed. For example their may be two different polygons that represent forest utilization within a hex, the sum of the two polygons is returned. Land cover objects include:</p>
 <ol class="arabic simple">
 <li><p>Buildings</p></li>
@@ -1201,7 +1202,7 @@ document.write(`
 </div>
 </div>
 <div class="section" id="testing-the-threshold">
-<h2><span class="section-number">6.5. </span>Testing the threshold<a class="headerlink" href="#testing-the-threshold" title="Permalink to this headline">#</a></h2>
+<h2><span class="section-number">7.5. </span>Testing the threshold<a class="headerlink" href="#testing-the-threshold" title="Permalink to this headline">#</a></h2>
 <p>To test a threshhold the survey results for the object of interest at each location are compared to the threshhold value. The number of times that the threshold value was exceeded (success) is counted for each location and sample. The number of samples for each location is also recorded. The result is an indexed data frame that contains the number of successes and samples for each location.</p>
 <p>For example consider the results for locations with similar urban land-use characteristics as mullermatte:</p>
 <div class="cell tag_remove-input docutils container">
@@ -1509,7 +1510,7 @@ document.write(`
 </div></div>
 </div>
 <div class="section" id="the-odds-and-frequency-of-exceeding-the-threshold">
-<h3><span class="section-number">6.5.1. </span>The odds and frequency of exceeding the threshold<a class="headerlink" href="#the-odds-and-frequency-of-exceeding-the-threshold" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">7.5.1. </span>The odds and frequency of exceeding the threshold<a class="headerlink" href="#the-odds-and-frequency-of-exceeding-the-threshold" title="Permalink to this headline">#</a></h3>
 <p>Given the values in the preceeding table an initial assesment of the frequency (k/n) and the odds (k/(n-k)) of exceeding the threshold can be made.</p>
 <p><strong>The expected frequency</strong> (k/n) that a survey result will exceed the threshhold value for a particular land use group is given in the table below.</p>
 <ol class="arabic simple">
@@ -1788,7 +1789,7 @@ document.write(`
 <p><strong>Interpretation:</strong> We do expect to exceed the national median the Aare survey area. At the lake level there are conditions that suggest the median value will be exceeded. However, we do not expect to exceed the median in most cases. For this location in particular we expect the median value to be exceeded frequently. The main causes could be attributed to the runoff from the urban center, increased use of recreational areas and appropriation or use of undefined areas within the hexagon that surrounds mullermatte.</p>
 </div>
 <div class="section" id="the-probability-of-exceeding-the-threshold">
-<h3><span class="section-number">6.5.2. </span>The probability of exceeding the threshold<a class="headerlink" href="#the-probability-of-exceeding-the-threshold" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">7.5.2. </span>The probability of exceeding the threshold<a class="headerlink" href="#the-probability-of-exceeding-the-threshold" title="Permalink to this headline">#</a></h3>
 <p>The probability of exceeding the threshhold can be written as a conditional probability statement. Substituting our variables in to Bayes’ Theorem we get:</p>
 <div class="math notranslate nohighlight">
 \[p(\theta | landuse) = \frac{p(landuse|\theta)*p(\theta)}{p(landuse)}\]</div>
@@ -1801,7 +1802,7 @@ document.write(`
 <li><p>Marginal probability of the data = <span class="math notranslate nohighlight">\(p(landuse)\)</span></p></li>
 </ol>
 <div class="section" id="the-prior">
-<h4><span class="section-number">6.5.2.1. </span>The prior<a class="headerlink" href="#the-prior" title="Permalink to this headline">#</a></h4>
+<h4><span class="section-number">7.5.2.1. </span>The prior<a class="headerlink" href="#the-prior" title="Permalink to this headline">#</a></h4>
 <p>The prior is <span class="math notranslate nohighlight">\(p(\theta)\)</span> which we define as <strong>the probability of exceeding the threshhold at the parent aggregation level</strong>. That is we consider the the probability of exceeding the threshhold in the survey area by considering the results at the survey area and taking the results of all the data as prior knowledge.</p>
 <div class="math notranslate nohighlight">
 \[p(\theta_{survey area} | landuse_{surveyarea}) = \frac{p(landuse_{surveyarea}|\theta_{surveyarea})*p(\theta_{alldata})}{p(landuse_{surveyarea})}\]</div>
@@ -1956,10 +1957,10 @@ document.write(`
 </div>
 </div>
 <div class="section" id="logistic-regression">
-<h3><span class="section-number">6.5.3. </span>Logistic regression<a class="headerlink" href="#logistic-regression" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">7.5.3. </span>Logistic regression<a class="headerlink" href="#logistic-regression" title="Permalink to this headline">#</a></h3>
 </div>
 <div class="section" id="infrastructure">
-<h3><span class="section-number">6.5.4. </span>Infrastructure<a class="headerlink" href="#infrastructure" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">7.5.4. </span>Infrastructure<a class="headerlink" href="#infrastructure" title="Permalink to this headline">#</a></h3>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2011,7 +2012,7 @@ document.write(`
 </div>
 </div>
 <div class="section" id="urbanization">
-<h3><span class="section-number">6.5.5. </span>Urbanization<a class="headerlink" href="#urbanization" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">7.5.5. </span>Urbanization<a class="headerlink" href="#urbanization" title="Permalink to this headline">#</a></h3>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2060,7 +2061,7 @@ document.write(`
 </div>
 </div>
 <div class="section" id="forest">
-<h3><span class="section-number">6.5.6. </span>Forest<a class="headerlink" href="#forest" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">7.5.6. </span>Forest<a class="headerlink" href="#forest" title="Permalink to this headline">#</a></h3>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2109,7 +2110,7 @@ document.write(`
 </div>
 </div>
 <div class="section" id="undefined">
-<h3><span class="section-number">6.5.7. </span>Undefined<a class="headerlink" href="#undefined" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">7.5.7. </span>Undefined<a class="headerlink" href="#undefined" title="Permalink to this headline">#</a></h3>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2158,7 +2159,7 @@ document.write(`
 </div>
 </div>
 <div class="section" id="recreation">
-<h3><span class="section-number">6.5.8. </span>Recreation<a class="headerlink" href="#recreation" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">7.5.8. </span>Recreation<a class="headerlink" href="#recreation" title="Permalink to this headline">#</a></h3>
 <div class="cell tag_hide-input docutils container">
 <details class="hide above-input">
 <summary aria-label="Toggle hidden content">
@@ -2207,13 +2208,13 @@ document.write(`
 </div>
 </div>
 <div class="section" id="distance-to-river-intersection">
-<h3><span class="section-number">6.5.9. </span>Distance to river intersection<a class="headerlink" href="#distance-to-river-intersection" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">7.5.9. </span>Distance to river intersection<a class="headerlink" href="#distance-to-river-intersection" title="Permalink to this headline">#</a></h3>
 <p><em>Currently being edited</em></p>
 <div class="cell tag_remove-input docutils container">
 </div>
 </div>
 <div class="section" id="length-of-river-intersects">
-<h3><span class="section-number">6.5.10. </span>Length of river intersects<a class="headerlink" href="#length-of-river-intersects" title="Permalink to this headline">#</a></h3>
+<h3><span class="section-number">7.5.10. </span>Length of river intersects<a class="headerlink" href="#length-of-river-intersects" title="Permalink to this headline">#</a></h3>
 <p><em>Currently being edited</em></p>
 <div class="cell tag_remove-input docutils container">
 </div>
@@ -2293,12 +2294,12 @@ json       : 2.0.9
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="left-prev"
-       href="hex-3000-m.html"
+       href="hex-3000-m-rivers.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">5. </span>All Data – New map data</p>
+        <p class="prev-next-title"><span class="section-number">6. </span>Rivers: new map data</p>
       </div>
     </a>
 </div></div>
@@ -2319,38 +2320,38 @@ json       : 2.0.9
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">6.1. Motivation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#proposition">6.1.1. Proposition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#motivation">7.1. Motivation</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#proposition">7.1.1. Proposition</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods-of-inference">6.2. Methods of inference</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#binomial-distribution">6.2.1. Binomial distribution</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#odds-and-log-odds">6.2.2. Odds and log odds</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods-of-inference">7.2. Methods of inference</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#binomial-distribution">7.2.1. Binomial distribution</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#odds-and-log-odds">7.2.2. Odds and log odds</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables">6.3. Variables</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">6.4. Data</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#survey-data">6.4.1. Survey data</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-land-use-data">6.4.2. The land use data</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#aggregating-scaling-and-binning">6.4.2.1. Aggregating, scaling and binning</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variables">7.3. Variables</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data">7.4. Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#survey-data">7.4.1. Survey data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-land-use-data">7.4.2. The land use data</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#aggregating-scaling-and-binning">7.4.2.1. Aggregating, scaling and binning</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-the-threshold">6.5. Testing the threshold</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-odds-and-frequency-of-exceeding-the-threshold">6.5.1. The odds and frequency of exceeding the threshold</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-probability-of-exceeding-the-threshold">6.5.2. The probability of exceeding the threshold</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-prior">6.5.2.1. The prior</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-the-threshold">7.5. Testing the threshold</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-odds-and-frequency-of-exceeding-the-threshold">7.5.1. The odds and frequency of exceeding the threshold</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-probability-of-exceeding-the-threshold">7.5.2. The probability of exceeding the threshold</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#the-prior">7.5.2.1. The prior</a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#logistic-regression">6.5.3. Logistic regression</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#infrastructure">6.5.4. Infrastructure</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#urbanization">6.5.5. Urbanization</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forest">6.5.6. Forest</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#undefined">6.5.7. Undefined</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recreation">6.5.8. Recreation</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distance-to-river-intersection">6.5.9. Distance to river intersection</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#length-of-river-intersects">6.5.10. Length of river intersects</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#logistic-regression">7.5.3. Logistic regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#infrastructure">7.5.4. Infrastructure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#urbanization">7.5.5. Urbanization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#forest">7.5.6. Forest</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#undefined">7.5.7. Undefined</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#recreation">7.5.8. Recreation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#distance-to-river-intersection">7.5.9. Distance to river intersection</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#length-of-river-intersects">7.5.10. Length of river intersects</a></li>
 </ul>
 </li>
 </ul>
