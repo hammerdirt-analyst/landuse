@@ -1,5 +1,7 @@
 # Indentifying accumulation and leakage with Spearmans Rho
 
+[![DOI](https://zenodo.org/badge/408619283.svg)](https://zenodo.org/badge/latestdoi/408619283)
+
 Data from a national beach litter survey of lakes and rivers is compared to landuse using Spearmans rank correlation coeffeicient. Spearmans Rho is easy to implement in python or a spreadsheet and may serve as an initial automated assessment for local administrations when considering the results of beach litter surveys.
 
 The value of Rho is defined for selected objects that reach a user defined frequency (ratio of samples where some were found / the number of samples) or density (number of objects/100 m) threshhold. The frequency or abundance is considered with respect to the landuse categories defined by the Swiss National Statistical Survey. The threshold values were tested against diffrent buffer zones around the survey locations.
