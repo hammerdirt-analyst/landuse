@@ -6,8 +6,6 @@ root: titlepage
 options:
     numbered: True
 chapters:
-- file: bielersee_results
-- file: lac_leman
 - file: project_results
 - file: consider_distance_to_river
 - file: hex-3000-m

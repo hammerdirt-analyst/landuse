@@ -59,10 +59,12 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'titlepage';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="1. Bielersee" href="bielersee_results.html" />
+    <link rel="next" title="1. All Data and all locations: original maps" href="project_results.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -140,13 +142,11 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="sidebar-primary-item"><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="bielersee_results.html">1. Bielersee</a></li>
-<li class="toctree-l1"><a class="reference internal" href="lac_leman.html">2. Lac Léman</a></li>
-<li class="toctree-l1"><a class="reference internal" href="project_results.html">3. All Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="consider_distance_to_river.html">4. River and lake intersections</a></li>
-<li class="toctree-l1"><a class="reference internal" href="hex-3000-m.html">5. Lakes: new map data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="hex-3000-m-rivers.html">6. Rivers: new map data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="probability.html">7. Probability and land-use</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project_results.html">1. All Data and all locations: original maps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="consider_distance_to_river.html">2. Distance, size and class of rivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hex-3000-m.html">3. Lakes: new map data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hex-3000-m-rivers.html">4. Rivers: new map data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="probability.html">5. Probability and land-use</a></li>
 </ul>
 
     </div>
@@ -294,7 +294,14 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#abstract">Abstract</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#purpose">Purpose</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-hypothesis-of">The hypothesis of ρ</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#esitmating-landuse">Esitmating landuse</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-the-road-and-river-network">Estimating the road and river network</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -329,8 +336,7 @@ notably in terms of abundance, composition and origin of items.</p>
 <li><p>determine if length and distance to river intersection is a better indicator of pollution source than just the number of intersections</p></li>
 <li><p>quantify the analysis in terms of number of objects accounted for</p></li>
 <li><p>update the inferences using the new map layers</p></li>
-<li><p>establish the method for infering trash densities using survey results and environmental conditions</p></li>
-<li><p>Compare the results of Spearmans Rho to those from a Bayesien inference table</p></li>
+<li><p>consider the probability of finding an object in relation to Spearmans <span class="math notranslate nohighlight">\(\rho\)</span></p></li>
 </ol>
 </div>
 <div class="section" id="introduction">
@@ -342,10 +348,30 @@ notably in terms of abundance, composition and origin of items.</p>
 <li><p>scale-able (up and down)</p></li>
 </ul>
 <p>Beach-litter data is <code class="docutils literal notranslate"><span class="pre">count</span></code> data. Gathered by volunteers following a protocol, the data is highly variable for many reasons. In most studies the median is less than the mean and in the case of the data for this study, the standard deviation is greater than the mean. Statistical tests dependent on linear relationships may not be appropriate, the guide from the JRC suggests using a Negative binomial distribution for modeling extreme events. Spearman’s ρ does not require that the two variables be continuous, nor is there an assumption of <em>normality</em>. The test is included in most standard computing libraries and spreadsheets, the process is easy to automate and integrate.  Spearman’s ρ or Spearman’s rank correlation coefficient is a non parametric test of rank correlation between two variables. Spearmans ρ defines the magnitude (how much it approaches linear) of monotonic relationships and the direction. When ρ is 0 there is no evidence of a monotonic relationship. Values of 1 and -1 signify a perfect monotonic relationship between two variables.</p>
-<p>The calculations are the same at each Geographic level. The number of samples and the mix of land-use attributes changes with every subset of data. It is those changes and how they relate to the magnitude of trash encountered that concerns these inquiries. This document assumes the reader knows what beach-litter monitoring is and how it applies to the health of the environment.</p>
+<div class="section" id="the-hypothesis-of">
+<h3>The hypothesis of ρ<a class="headerlink" href="#the-hypothesis-of" title="Permalink to this headline">#</a></h3>
+<p><span class="math notranslate nohighlight">\(H_{0}\)</span>: There is no monotonic association between the two variables</p>
+<p>Statistical significance is defined as a very unlikely outcome under the null hypothesis, for this report unlikely is defined as less than 5% chance or p &lt; 0.05 that the null hypotheses will be rejected even though it is true. Spearmans ρ is implemented using <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.spearmanr.html">SciPy</a> on <a class="reference external" href="https://jupyter.org/">Jupyter Lab</a></p>
+<p>The data is beach litter data collected during a national survey of lakes and rivers in Switzerland, <a class="reference external" href="https://hammerdirt-analyst.github.io/IQAASL-End-0f-Sampling-2021/titlepage_de.html">IQAASL</a>. Standard MSFD/OSPAR protocols were followed within geographic limitations.</p>
+<p><strong>Using ρ</strong></p>
+<p>Land use data for each survey location was collected by creating buffer-zones around each survey location at radiuses from 1.5 - 5km and 10km and sectioning layers of the <a class="reference external" href="https://www.bfs.admin.ch/bfs/en/home/services/geostat/swiss-federal-statistics-geodata/land-use-cover-suitability/swiss-land-use-statistics.html#geodata__content_bfs_en_home_dienstleistungen_geostat_geodaten-bundesstatistik_boden-nutzung-bedeckung-eignung_arealstatistik-schweiz_jcr_content_par_tabs">Swiss Statistical Survey</a>, the complete process is defined here <a class="reference external" href="https://hammerdirt-analyst.github.io/IQAASL-End-0f-Sampling-2021/land_use_correlation.htmlwith"><em>The land use profile</em></a>.</p>
+<p>The land use is designated For every 100m² of the country using satellite images. There are 27 different possible categories for each 100m², a buffer zone with radius of 1500m  has an area ( <span class="math notranslate nohighlight">\(\pi r^{2}\)</span> ) of 7,068,583m² or <span class="math notranslate nohighlight">\(\approxeq\)</span> 700 100m squares. In Switzerland the width of the lake shore is fairly small, a survey of 100m x 50m would be considered fairly large. For the data in this report the median survey length was 52 meters.</p>
+<p>However, there are over three hundred samples in the data set. Each sample has between zero and 100 different objects, each object has its own count. In total there were over 50,000 items collected, identified and counted in the 12 month period. Each sample is recorded as pieces of trash per meter and quantity.</p>
+</div>
+</div>
+<div class="section" id="esitmating-landuse">
+<h2>Esitmating landuse<a class="headerlink" href="#esitmating-landuse" title="Permalink to this headline">#</a></h2>
+<p>Once the data is exported from the maplayer the features were grouped by use. For example all types of buildings were grouped together, the different aggricultural uses were grouped together as well as woodlands and water features.</p>
+<div class="section" id="estimating-the-road-and-river-network">
+<h3>Estimating the road and river network<a class="headerlink" href="#estimating-the-road-and-river-network" title="Permalink to this headline">#</a></h3>
+<p>The values for the road and river network with a given radius are defined separately. The road network is the sum of the lengths of all roads, footpaths, freeways and forest roads within the area of interest. Note that the area attributed to roads given by the default map layer does not provide the same value. This is because of the way land use is estimated for each 100 m square. For example, if the center of a 100 m square has a road in it then the entire 100² m is attributed to the category roads (or railways). As a result only a portion of the road network is accounted for.</p>
+<p>To calculate the road network another map layer is used. The polylines for the roads are disolved into a single line, and the length of that line (divided by 1000) is the number of kilometers of road network for the area in question.</p>
+<p>The river network considers the length, class and size of rivers associated with a survey location.</p>
+<p>The calculations are the same at each Geographic level. <strong>The number of samples and the mix of land-use attributes changes with every subset of data. It is those changes and how they relate to the magnitude of trash encountered at a location that concerns these inquiries. This document assumes the reader knows what beach-litter monitoring is and how it applies to the health of the environment</strong>.</p>
 <p>A statistical test is not a replacement for common sense. It is an another piece of evidence to consider along with the results from previous studies, the researchers personal experience as well as the history of the problem within the geographic constraints of the data.</p>
-<p><strong>Authors:</strong> Louise Schreyers, Roger Erismann, Montserrat Filella, Christian Ludwig</p>
-<p>For information regarding the contents of this document conata <a class="reference external" href="mailto:analyst&#37;&#52;&#48;hammerdirt&#46;ch">analyst<span>&#64;</span>hammerdirt<span>&#46;</span>ch</a></p>
+<p><strong>Authors:</strong> Louise Schreyers, Roger Erismann, Bhavish Patel, Montserrat Filella, Christian Ludwig</p>
+<p>For information regarding the contents of this document conatact <a class="reference external" href="mailto:analyst&#37;&#52;&#48;hammerdirt&#46;ch">analyst<span>&#64;</span>hammerdirt<span>&#46;</span>ch</a></p>
+</div>
 </div>
 <div class="toctree-wrapper compound">
 </div>
@@ -383,11 +409,11 @@ notably in terms of abundance, composition and origin of items.</p>
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
     <a class="right-next"
-       href="bielersee_results.html"
+       href="project_results.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">1. </span>Bielersee</p>
+        <p class="prev-next-title"><span class="section-number">1. </span>All Data and all locations: original maps</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -411,7 +437,14 @@ notably in terms of abundance, composition and origin of items.</p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#abstract">Abstract</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#purpose">Purpose</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-hypothesis-of">The hypothesis of ρ</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#esitmating-landuse">Esitmating landuse</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-the-road-and-river-network">Estimating the road and river network</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

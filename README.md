@@ -17,21 +17,18 @@ __Note:__ These are large files. Git Large File Storage (Git LFS) is enabled, if
 
 ### Notebooks
 
-#### Spearmans Rho for one lake and one radius:
-
-1. bielersee_results.ipynb
-2. lac_leman.ipynb
 
 #### Spearmans Rho for all locations:
 
-1. project_results.ipynb
-2. hex-3000-m.ipynb: the test at 1'500 m was is repeated with the most recent map values 
+1. project_results.ipynb : the test was conducted at different buffer radiuses 1'500 m - 10'000 m
+2. hex-3000-m.ipynb: the test at 1'500 m was is repeated with the most recent map values using only lakes
+3. hex-3000-m-rivers.ipynb: the test at 1'500 m was is repeated with the most recent map values using only rivers
 
-#### Lenth to discharge point and length of river section:
+#### Length to discharge point and length of river section:
 
 1. consider_distance_to_river.ipynb
 
-#### Probability - logistic regression
+#### Probability
 
 1. probability.ipynb
 
